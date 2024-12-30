@@ -5,8 +5,19 @@ import 'package:hive_flutter/hive_flutter.dart';
 class TaskViewModel extends ChangeNotifier {
   // open box
   final Box<Task> _taskBox = Hive.box<Task>('tasks');
+
   // get tasks
   List<Task> get tasks => _taskBox.values.toList();
+
+  Task? _selectedTask;
+  // get selected task
+  Task? get selectedTask => _selectedTask;
+
+  // set selected task
+  void setSelectedTask(Task task) {
+    _selectedTask = task;
+    notifyListeners();
+  }
 
   // add task
   Future<void> addTask(Task task) async {
@@ -26,9 +37,18 @@ class TaskViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> updateTask(int index, Task updatedTask) async {
+  Future<void> updateTask(
+    String id,
+    Task updatedTask,
+  ) async {
     //await _taskBox.deleteAt(index);
-    await _taskBox.putAt(index, updatedTask);
-    notifyListeners();
+    final task = _taskBox.get(id);
+    if (task != null) {
+      await _taskBox.put(id, updatedTask);
+      if (_selectedTask?.id == id) {
+        _selectedTask = updatedTask;
+      }
+      notifyListeners();
+    }
   }
 }

@@ -1,8 +1,8 @@
 import 'package:dayley_task_app/models/task_model.dart';
 import 'package:dayley_task_app/utils/color_palette.dart';
-import 'package:dayley_task_app/utils/util.dart';
 import 'package:dayley_task_app/viewmodel/task_view_model.dart';
 import 'package:dayley_task_app/widgets/widgets.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -19,7 +19,7 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
 
-  CalendarFormat _calendarFormat = CalendarFormat.month;
+  CalendarFormat _calendarFormat = CalendarFormat.week;
   DateTime _focusedDay = DateTime.now();
   DateTime? _selectedDay;
   DateTime? _rangeStart;
@@ -52,8 +52,8 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
         appBar: AppBar(
           centerTitle: true,
           backgroundColor: kWhiteColor,
-          title: const Text(
-            'Create Task',
+          title: Text(
+            'createTask'.tr(),
             style: TextStyle(
               fontWeight: FontWeight.bold,
               fontSize: 30,
@@ -70,10 +70,11 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
                 TableCalendar(
                   calendarFormat: _calendarFormat,
                   startingDayOfWeek: StartingDayOfWeek.monday,
-                  availableCalendarFormats: const {
-                    CalendarFormat.month: 'Month',
-                    CalendarFormat.week: 'Week',
+                  availableCalendarFormats: {
+                    CalendarFormat.week: 'designWeek'.tr(),
+                    CalendarFormat.month: 'designMonth'.tr(),
                   },
+                  locale: context.locale.languageCode,
                   rangeSelectionMode: RangeSelectionMode.toggledOn,
                   focusedDay: _focusedDay,
                   firstDay: DateTime.utc(2023, 1, 1),
@@ -94,25 +95,10 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
                   onRangeSelected: _onRangeSelected,
                 ),
                 const SizedBox(height: 20),
-                Container(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-                  decoration: BoxDecoration(
-                      color: kPrimaryColor.withOpacity(.1),
-                      borderRadius: const BorderRadius.all(Radius.circular(5))),
-                  child: buildText(
-                      _rangeStart != null && _rangeEnd != null
-                          ? 'Task starting at ${formatDate(dateTime: _rangeStart.toString())} - ${formatDate(dateTime: _rangeEnd.toString())}'
-                          : 'Select a date range',
-                      kPrimaryColor,
-                      12,
-                      FontWeight.w400,
-                      TextAlign.start,
-                      TextOverflow.clip),
-                ),
+                buildSelectedDate(_rangeStart, _rangeEnd, context),
                 const SizedBox(height: 20),
                 buildText(
-                  'Title',
+                  'title'.tr(),
                   kBlackColor,
                   14,
                   FontWeight.bold,
@@ -120,118 +106,32 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
                   TextOverflow.clip,
                 ),
                 const SizedBox(height: 10),
-                TextFormField(
-                  validator: (val) =>
-                      val!.isEmpty ? 'Please enter a title' : null,
-                  controller: _titleController,
-                  keyboardType: TextInputType.text,
-                  decoration: InputDecoration(
-                    hintText: "Enter the title of the task",
-                    hintStyle: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w300,
-                    ),
-                    fillColor: kWhiteColor,
-                    filled: true,
-                    contentPadding: const EdgeInsets.symmetric(
-                        vertical: 15, horizontal: 10),
-                    floatingLabelBehavior: FloatingLabelBehavior.always,
-                    errorStyle: const TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.normal,
-                      color: kRed,
-                    ),
-                    focusedBorder: const OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(5)),
-                      borderSide: BorderSide(width: 1, color: kPrimaryColor),
-                    ),
-                    disabledBorder: OutlineInputBorder(
-                      borderRadius: const BorderRadius.all(Radius.circular(5)),
-                      borderSide: BorderSide(width: 0, color: kWhiteColor),
-                    ),
-                    enabledBorder: const OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(5)),
-                      borderSide: BorderSide(width: 0, color: kGrey1),
-                    ),
-                    border: const OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(5)),
-                        borderSide: BorderSide(width: 0, color: kGrey1)),
-                    errorBorder: const OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(5)),
-                        borderSide: BorderSide(width: 1, color: kRed)),
-                    focusedErrorBorder: const OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(5)),
-                        borderSide: BorderSide(width: 1, color: kGrey1)),
-                    focusColor: kWhiteColor,
-                    hoverColor: kWhiteColor,
-                  ),
-                  cursorColor: kPrimaryColor,
-                  style: const TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.normal,
-                    color: kBlackColor,
+                SizedBox(
+                  height: 50,
+                  child: buildTextFormField(
+                    _titleController,
+                    "enterTaskTitle".tr(),
+                    true,
                   ),
                 ),
                 SizedBox(height: 10),
                 buildText(
-                  "Description",
+                  "description".tr(),
                   kBlackColor,
                   14,
                   FontWeight.bold,
                   TextAlign.start,
                   TextOverflow.clip,
                 ),
-                TextFormField(
-                  maxLines: null,
-                  validator: (val) =>
-                      val!.isEmpty ? 'Please enter a Description' : null,
-                  controller: _descriptionController,
-                  keyboardType: TextInputType.multiline,
-                  decoration: InputDecoration(
-                    hintText: "Enter the Description of the task",
-                    hintStyle: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w300,
-                    ),
-                    fillColor: kWhiteColor,
-                    filled: true,
-                    contentPadding: const EdgeInsets.symmetric(
-                        vertical: 15, horizontal: 10),
-                    floatingLabelBehavior: FloatingLabelBehavior.always,
-                    errorStyle: const TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.normal,
-                      color: kRed,
-                    ),
-                    focusedBorder: const OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(5)),
-                      borderSide: BorderSide(width: 1, color: kPrimaryColor),
-                    ),
-                    disabledBorder: OutlineInputBorder(
-                      borderRadius: const BorderRadius.all(Radius.circular(5)),
-                      borderSide: BorderSide(width: 0, color: kWhiteColor),
-                    ),
-                    enabledBorder: const OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(5)),
-                      borderSide: BorderSide(width: 0, color: kGrey1),
-                    ),
-                    border: const OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(5)),
-                        borderSide: BorderSide(width: 0, color: kGrey1)),
-                    errorBorder: const OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(5)),
-                        borderSide: BorderSide(width: 1, color: kRed)),
-                    focusedErrorBorder: const OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(5)),
-                        borderSide: BorderSide(width: 1, color: kGrey1)),
-                    focusColor: kWhiteColor,
-                    hoverColor: kWhiteColor,
-                  ),
-                  cursorColor: kPrimaryColor,
-                  style: const TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.normal,
-                    color: kBlackColor,
+                SizedBox(
+                  height: 10,
+                ),
+                SizedBox(
+                  height: 150,
+                  child: buildTextFormField(
+                    _descriptionController,
+                    "${"description".tr()}...",
+                    false,
                   ),
                 ),
                 SizedBox(height: 20),
@@ -244,11 +144,11 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
                         },
                         style: ButtonStyle(
                           foregroundColor:
-                              MaterialStateProperty.all<Color>(Colors.white),
-                          backgroundColor: MaterialStateProperty.all<Color>(
+                              WidgetStateProperty.all<Color>(Colors.white),
+                          backgroundColor: WidgetStateProperty.all<Color>(
                               Color.fromARGB(255, 225, 225, 248)),
                           shape:
-                              MaterialStateProperty.all<RoundedRectangleBorder>(
+                              WidgetStateProperty.all<RoundedRectangleBorder>(
                             RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(
                                   10), // Adjust the radius as needed
@@ -256,7 +156,7 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
                           ),
                         ),
                         child: Text(
-                          "Cancel",
+                          "cancel".tr(),
                           style: TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.bold,
@@ -293,15 +193,22 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
                             // _rangeStart = null;
                             // _rangeEnd = null;
                             Navigator.pop(context);
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text('Please fill all fields'),
+                                duration: Duration(seconds: 2),
+                              ),
+                            );
                           }
                         },
                         style: ButtonStyle(
                           foregroundColor:
-                              MaterialStateProperty.all<Color>(Colors.white),
+                              WidgetStateProperty.all<Color>(Colors.white),
                           backgroundColor:
-                              MaterialStateProperty.all<Color>(kPrimaryColor),
+                              WidgetStateProperty.all<Color>(kPrimaryColor),
                           shape:
-                              MaterialStateProperty.all<RoundedRectangleBorder>(
+                              WidgetStateProperty.all<RoundedRectangleBorder>(
                             RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(
                                 10,
@@ -310,7 +217,7 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
                           ),
                         ),
                         child: Text(
-                          "Save",
+                          "save".tr(),
                           style: TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.bold,

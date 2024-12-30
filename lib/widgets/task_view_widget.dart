@@ -2,8 +2,8 @@ import 'package:dayley_task_app/routes/pages.dart';
 import 'package:dayley_task_app/utils/color_palette.dart';
 import 'package:dayley_task_app/utils/util.dart';
 import 'package:dayley_task_app/viewmodel/task_view_model.dart';
-import 'package:dayley_task_app/views/update_task.dart';
 import 'package:dayley_task_app/widgets/widgets.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
@@ -13,10 +13,12 @@ class TaskViewWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var taskViewModel = Provider.of<TaskViewModel>(context);
+    //var taskViewModel = Provider.of<TaskViewModel>(context);
+    final taskViewModel = context.watch<TaskViewModel>();
     return ListView.builder(
       itemCount: taskViewModel.tasks.length,
       itemBuilder: (context, index) {
+        final task = taskViewModel.tasks[index];
         return Container(
             padding: const EdgeInsets.all(0),
             margin: const EdgeInsets.only(bottom: 20),
@@ -53,24 +55,26 @@ class TaskViewWidget extends StatelessWidget {
                               switch (value) {
                                 case 0:
                                   {
-                                    // Navigator.pushNamed(
-                                    //     context, Pages.updateTask,
-                                    //     arguments: {"index": index});
-                                    // break;
-                                    Navigator.push(context,
-                                        MaterialPageRoute(builder: (context) {
-                                      return UpdateTask(
-                                        index: index,
+                                    if (task.isCompleted) {
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        const SnackBar(
+                                          content: Text(
+                                              'Cannot edit completed task'),
+                                          duration: Duration(seconds: 2),
+                                        ),
                                       );
-                                    }));
+                                    } else {
+                                      taskViewModel.setSelectedTask(task);
+                                      Navigator.pushNamed(
+                                        context,
+                                        Pages.updateTask,
+                                      );
+                                    }
+                                    break;
                                   }
                                 case 1:
                                   {
-                                    // context.read<TasksBloc>().add(DeleteTaskEvent(
-                                    //     taskModel: widget.taskModel));
-                                    // break;
-                                    // taskViewModel.deleteTask(
-                                    //     int.parse(taskViewModel.tasks[index].id));
                                     taskViewModel.deleteTask(index);
                                   }
                               }
@@ -89,7 +93,7 @@ class TaskViewWidget extends StatelessWidget {
                                         width: 10,
                                       ),
                                       buildText(
-                                          'Edit task',
+                                          'edit'.tr(),
                                           kBlackColor,
                                           14,
                                           FontWeight.normal,
@@ -110,7 +114,7 @@ class TaskViewWidget extends StatelessWidget {
                                         width: 10,
                                       ),
                                       buildText(
-                                          'Delete task',
+                                          'delete'.tr(),
                                           kRed,
                                           14,
                                           FontWeight.normal,
@@ -157,7 +161,7 @@ class TaskViewWidget extends StatelessWidget {
                               ),
                               Expanded(
                                 child: buildText(
-                                    '${formatDate(dateTime: taskViewModel.tasks[index].startDate.toString())} - ${formatDate(dateTime: taskViewModel.tasks[index].endDate.toString())}',
+                                    '${formatDate(dateTime: taskViewModel.tasks[index].startDate.toString(), context: context)} - ${formatDate(dateTime: taskViewModel.tasks[index].endDate.toString(), context: context)}',
                                     kBlackColor,
                                     10,
                                     FontWeight.w400,

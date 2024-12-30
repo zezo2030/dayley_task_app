@@ -1,4 +1,5 @@
-import 'package:intl/intl.dart';
+import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/material.dart';
 
 // parse date string to DateTime
 DateTime toDate({required String date}) {
@@ -9,7 +10,13 @@ DateTime toDate({required String date}) {
 String formatDate({
   required String dateTime,
   format = 'dd/MM/yyyy',
+  required BuildContext context,
 }) {
   final localDateTime = toDate(date: dateTime);
-  return DateFormat(format).format(localDateTime);
+  final locale = context.locale.languageCode;
+
+  // استخدام لغة التطبيق الحالية للتنسيق
+  final formatter = DateFormat(format, locale);
+
+  return formatter.format(localDateTime);
 }

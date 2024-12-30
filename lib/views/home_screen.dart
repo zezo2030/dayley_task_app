@@ -1,12 +1,13 @@
 import 'package:dayley_task_app/routes/pages.dart';
 import 'package:dayley_task_app/utils/color_palette.dart';
 import 'package:dayley_task_app/viewmodel/task_view_model.dart';
-import 'package:dayley_task_app/widgets/task_view_widget.dart';
+import 'package:dayley_task_app/widgets/task_view_new_style_widget.dart';
 import 'package:dayley_task_app/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -25,10 +26,10 @@ class HomeScreen extends StatelessWidget {
       child: ScaffoldMessenger(
         child: Scaffold(
           appBar: AppBar(
-            backgroundColor: kWhiteColor,
+            backgroundColor: kGrey4,
             automaticallyImplyLeading: false,
             title: buildText(
-              'All Tasks',
+              'allTasks'.tr(),
               kBlackColor,
               20,
               FontWeight.w600,
@@ -36,14 +37,38 @@ class HomeScreen extends StatelessWidget {
               TextOverflow.clip,
             ),
             centerTitle: true,
+            actions: [
+              IconButton(
+                icon: Container(
+                  padding: const EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    color: kPrimaryColor.withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Text(
+                    context.locale.languageCode.toUpperCase(),
+                    style: TextStyle(
+                      color: kPrimaryColor,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+                onPressed: () {
+                  context.setLocale(context.locale.languageCode == 'ar'
+                      ? const Locale('en')
+                      : const Locale('ar'));
+                },
+              ),
+              const SizedBox(width: 10),
+            ],
           ),
-          backgroundColor: kWhiteColor,
+          backgroundColor: kGrey4,
           body: GestureDetector(
             behavior: HitTestBehavior.opaque,
             onTap: () => FocusScope.of(context).unfocus(),
             child: taskViewModel.tasks.isEmpty
                 ? _imptyTaskList(height: size.height * .20, width: size.width)
-                : TaskViewWidget(),
+                : TaskViewNewStyleWidget(),
           ),
           floatingActionButton: FloatingActionButton(
             onPressed: () {
@@ -74,15 +99,16 @@ class HomeScreen extends StatelessWidget {
           const SizedBox(
             height: 50,
           ),
-          buildText('Schedule your tasks', kBlackColor, 30, FontWeight.w600,
+          buildText('scheduleTasks'.tr(), kBlackColor, 30, FontWeight.w600,
               TextAlign.center, TextOverflow.clip),
           buildText(
-              'Manage your task schedule easily\nand efficiently',
-              kBlackColor.withOpacity(.5),
-              12,
-              FontWeight.normal,
-              TextAlign.center,
-              TextOverflow.clip),
+            'manageTasksDesc'.tr(),
+            kBlackColor.withOpacity(.5),
+            12,
+            FontWeight.normal,
+            TextAlign.center,
+            TextOverflow.clip,
+          ),
         ],
       ),
     );

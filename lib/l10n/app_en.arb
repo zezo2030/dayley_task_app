@@ -1,0 +1,19 @@
+{
+    "@@locale": "en",
+    "allTasks": "All Tasks",
+    "@allTasks": {
+        "description": "Title for all tasks screen"
+    },
+    "scheduleTasks": "Schedule your tasks",
+    "@scheduleTasks": {
+        "description": "Schedule tasks title"
+    },
+    "manageTasksDesc": "Manage your task schedule easily and efficiently",
+    "@manageTasksDesc": {
+        "description": "Task management description"
+    },
+    "createTask": "Create Task",
+    "@createTask": {
+        "description": "Create task button"
+    }
+} 

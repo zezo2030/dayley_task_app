@@ -1,47 +1,27 @@
 import 'package:dayley_task_app/models/task_model.dart';
 import 'package:dayley_task_app/utils/color_palette.dart';
-import 'package:dayley_task_app/utils/util.dart';
 import 'package:dayley_task_app/viewmodel/task_view_model.dart';
 import 'package:dayley_task_app/widgets/widgets.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 class UpdateTask extends StatefulWidget {
-  const UpdateTask({super.key, required this.index});
-
-  final int index;
+  const UpdateTask({
+    super.key,
+  });
 
   @override
   State<UpdateTask> createState() => _UpdateTaskState();
 }
 
 class _UpdateTaskState extends State<UpdateTask> {
-  //late int taskIndex = ;
-  int get index => widget.index;
-
-  // @override
-  // didChangeDependencies() {
-  //   if (ModalRoute.of(context)!.settings.arguments != null) {
-  //     var _tasks = ModalRoute.of(context)!.settings.arguments as Map;
-  //     taskIndex = _tasks['index'];
-  //     print(taskIndex);
-  //   }
-  //    _titleController.text =
-  //        Provider.of<TaskViewModel>(context).tasks[taskIndex].title;
-  //    _descriptionController.text =
-  //        Provider.of<TaskViewModel>(context).tasks[taskIndex].description;
-  //    _rangeStart =
-  //        Provider.of<TaskViewModel>(context).tasks[taskIndex].startDate;
-  //    _rangeEnd = Provider.of<TaskViewModel>(context).tasks[taskIndex].endDate;
-  //   super.didChangeDependencies();
-  // }
-
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
 
-  CalendarFormat _calendarFormat = CalendarFormat.month;
+  CalendarFormat _calendarFormat = CalendarFormat.week;
   DateTime _focusedDay = DateTime.now();
   DateTime? _selectedDay;
   DateTime? _rangeStart;
@@ -53,19 +33,6 @@ class _UpdateTaskState extends State<UpdateTask> {
   void initState() {
     super.initState();
     _selectedDay = _focusedDay;
-    _titleController.text =
-        Provider.of<TaskViewModel>(context, listen: false).tasks[index].title;
-    _descriptionController.text =
-        Provider.of<TaskViewModel>(context, listen: false)
-            .tasks[index]
-            .description;
-    _rangeStart = Provider.of<TaskViewModel>(context, listen: false)
-        .tasks[index]
-        .startDate;
-    _rangeEnd =
-        Provider.of<TaskViewModel>(context, listen: false).tasks[index].endDate;
-
-    print(index);
   }
 
   _onRangeSelected(DateTime? start, DateTime? end, DateTime focusedDay) {
@@ -79,7 +46,17 @@ class _UpdateTaskState extends State<UpdateTask> {
 
   @override
   Widget build(BuildContext context) {
-    final taskViewModel = Provider.of<TaskViewModel>(context);
+    //final taskViewModel = Provider.of<TaskViewModel>(context);
+    final taskViewModel = context.watch<TaskViewModel>();
+    final task = taskViewModel.selectedTask;
+
+    if (task != null) {
+      _titleController.text = task.title;
+      _descriptionController.text = task.description;
+      _rangeStart = task.startDate;
+      _rangeEnd = task.endDate;
+    }
+
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: const SystemUiOverlayStyle(
         statusBarColor: Colors.transparent,
@@ -89,8 +66,8 @@ class _UpdateTaskState extends State<UpdateTask> {
         appBar: AppBar(
           centerTitle: true,
           backgroundColor: kWhiteColor,
-          title: const Text(
-            'Create Task',
+          title: Text(
+            'updateTask'.tr(),
             style: TextStyle(
               fontWeight: FontWeight.bold,
               fontSize: 30,
@@ -107,10 +84,11 @@ class _UpdateTaskState extends State<UpdateTask> {
                 TableCalendar(
                   calendarFormat: _calendarFormat,
                   startingDayOfWeek: StartingDayOfWeek.monday,
-                  availableCalendarFormats: const {
-                    CalendarFormat.month: 'Month',
-                    CalendarFormat.week: 'Week',
+                  availableCalendarFormats: {
+                    CalendarFormat.month: 'designMonth'.tr(),
+                    CalendarFormat.week: 'designWeek'.tr(),
                   },
+                  locale: context.locale.languageCode,
                   rangeSelectionMode: RangeSelectionMode.toggledOn,
                   focusedDay: _focusedDay,
                   firstDay: DateTime.utc(2023, 1, 1),
@@ -131,25 +109,10 @@ class _UpdateTaskState extends State<UpdateTask> {
                   onRangeSelected: _onRangeSelected,
                 ),
                 const SizedBox(height: 20),
-                Container(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-                  decoration: BoxDecoration(
-                      color: kPrimaryColor.withOpacity(.1),
-                      borderRadius: const BorderRadius.all(Radius.circular(5))),
-                  child: buildText(
-                      _rangeStart != null && _rangeEnd != null
-                          ? 'Task starting at ${formatDate(dateTime: _rangeStart.toString())} - ${formatDate(dateTime: _rangeEnd.toString())}'
-                          : 'Select a date range',
-                      kPrimaryColor,
-                      12,
-                      FontWeight.w400,
-                      TextAlign.start,
-                      TextOverflow.clip),
-                ),
+                buildSelectedDate(_rangeStart, _rangeEnd, context),
                 const SizedBox(height: 20),
                 buildText(
-                  'Title',
+                  'title'.tr(),
                   kBlackColor,
                   14,
                   FontWeight.bold,
@@ -157,118 +120,30 @@ class _UpdateTaskState extends State<UpdateTask> {
                   TextOverflow.clip,
                 ),
                 const SizedBox(height: 10),
-                TextFormField(
-                  validator: (val) =>
-                      val!.isEmpty ? 'Please enter a title' : null,
-                  controller: _titleController,
-                  keyboardType: TextInputType.text,
-                  decoration: InputDecoration(
-                    hintText: "Enter the title of the task",
-                    hintStyle: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w300,
-                    ),
-                    fillColor: kWhiteColor,
-                    filled: true,
-                    contentPadding: const EdgeInsets.symmetric(
-                        vertical: 15, horizontal: 10),
-                    floatingLabelBehavior: FloatingLabelBehavior.always,
-                    errorStyle: const TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.normal,
-                      color: kRed,
-                    ),
-                    focusedBorder: const OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(5)),
-                      borderSide: BorderSide(width: 1, color: kPrimaryColor),
-                    ),
-                    disabledBorder: OutlineInputBorder(
-                      borderRadius: const BorderRadius.all(Radius.circular(5)),
-                      borderSide: BorderSide(width: 0, color: kWhiteColor),
-                    ),
-                    enabledBorder: const OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(5)),
-                      borderSide: BorderSide(width: 0, color: kGrey1),
-                    ),
-                    border: const OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(5)),
-                        borderSide: BorderSide(width: 0, color: kGrey1)),
-                    errorBorder: const OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(5)),
-                        borderSide: BorderSide(width: 1, color: kRed)),
-                    focusedErrorBorder: const OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(5)),
-                        borderSide: BorderSide(width: 1, color: kGrey1)),
-                    focusColor: kWhiteColor,
-                    hoverColor: kWhiteColor,
-                  ),
-                  cursorColor: kPrimaryColor,
-                  style: const TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.normal,
-                    color: kBlackColor,
+                SizedBox(
+                  height: 50,
+                  child: buildTextFormField(
+                    _titleController,
+                    "updateTaskTitle".tr(),
+                    true,
                   ),
                 ),
-                SizedBox(height: 10),
+                SizedBox(height: 25),
                 buildText(
-                  "Description",
+                  "description".tr(),
                   kBlackColor,
                   14,
                   FontWeight.bold,
                   TextAlign.start,
                   TextOverflow.clip,
                 ),
-                TextFormField(
-                  maxLines: null,
-                  validator: (val) =>
-                      val!.isEmpty ? 'Please enter a Description' : null,
-                  controller: _descriptionController,
-                  keyboardType: TextInputType.multiline,
-                  decoration: InputDecoration(
-                    hintText: "Enter the Description of the task",
-                    hintStyle: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w300,
-                    ),
-                    fillColor: kWhiteColor,
-                    filled: true,
-                    contentPadding: const EdgeInsets.symmetric(
-                        vertical: 15, horizontal: 10),
-                    floatingLabelBehavior: FloatingLabelBehavior.always,
-                    errorStyle: const TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.normal,
-                      color: kRed,
-                    ),
-                    focusedBorder: const OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(5)),
-                      borderSide: BorderSide(width: 1, color: kPrimaryColor),
-                    ),
-                    disabledBorder: OutlineInputBorder(
-                      borderRadius: const BorderRadius.all(Radius.circular(5)),
-                      borderSide: BorderSide(width: 0, color: kWhiteColor),
-                    ),
-                    enabledBorder: const OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(5)),
-                      borderSide: BorderSide(width: 0, color: kGrey1),
-                    ),
-                    border: const OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(5)),
-                        borderSide: BorderSide(width: 0, color: kGrey1)),
-                    errorBorder: const OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(5)),
-                        borderSide: BorderSide(width: 1, color: kRed)),
-                    focusedErrorBorder: const OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(5)),
-                        borderSide: BorderSide(width: 1, color: kGrey1)),
-                    focusColor: kWhiteColor,
-                    hoverColor: kWhiteColor,
-                  ),
-                  cursorColor: kPrimaryColor,
-                  style: const TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.normal,
-                    color: kBlackColor,
+                SizedBox(height: 10),
+                SizedBox(
+                  height: 150,
+                  child: buildTextFormField(
+                    _descriptionController,
+                    "updateDescription".tr(),
+                    false,
                   ),
                 ),
                 SizedBox(height: 20),
@@ -281,11 +156,11 @@ class _UpdateTaskState extends State<UpdateTask> {
                         },
                         style: ButtonStyle(
                           foregroundColor:
-                              MaterialStateProperty.all<Color>(Colors.white),
-                          backgroundColor: MaterialStateProperty.all<Color>(
+                              WidgetStateProperty.all<Color>(Colors.white),
+                          backgroundColor: WidgetStateProperty.all<Color>(
                               Color.fromARGB(255, 225, 225, 248)),
                           shape:
-                              MaterialStateProperty.all<RoundedRectangleBorder>(
+                              WidgetStateProperty.all<RoundedRectangleBorder>(
                             RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(
                                   10), // Adjust the radius as needed
@@ -293,7 +168,7 @@ class _UpdateTaskState extends State<UpdateTask> {
                           ),
                         ),
                         child: Text(
-                          "Cancel",
+                          "cancel".tr(),
                           style: TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.bold,
@@ -317,7 +192,7 @@ class _UpdateTaskState extends State<UpdateTask> {
                               _rangeStart != null &&
                               _rangeEnd != null) {
                             taskViewModel.updateTask(
-                              index,
+                              task!.id,
                               Task(
                                 id: taskId,
                                 title: title,
@@ -335,11 +210,11 @@ class _UpdateTaskState extends State<UpdateTask> {
                         },
                         style: ButtonStyle(
                           foregroundColor:
-                              MaterialStateProperty.all<Color>(Colors.white),
+                              WidgetStateProperty.all<Color>(Colors.white),
                           backgroundColor:
-                              MaterialStateProperty.all<Color>(kPrimaryColor),
+                              WidgetStateProperty.all<Color>(kPrimaryColor),
                           shape:
-                              MaterialStateProperty.all<RoundedRectangleBorder>(
+                              WidgetStateProperty.all<RoundedRectangleBorder>(
                             RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(
                                 10,
@@ -348,7 +223,7 @@ class _UpdateTaskState extends State<UpdateTask> {
                           ),
                         ),
                         child: Text(
-                          "Update",
+                          "update".tr(),
                           style: TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.bold,

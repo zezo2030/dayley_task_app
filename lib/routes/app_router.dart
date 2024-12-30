@@ -16,8 +16,8 @@ Route onGenerateRoute(RouteSettings routeSettings) {
 
     case Pages.createTask:
       return MaterialPageRoute(builder: (_) => const CreateTaskScreen());
-    // case Pages.updateTask:
-    //   return MaterialPageRoute(builder: (_) => const UpdateTask());
+    case Pages.updateTask:
+      return MaterialPageRoute(builder: (_) => const UpdateTask());
     default:
       return MaterialPageRoute(builder: (_) => const PageNotFound());
   }

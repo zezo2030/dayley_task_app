@@ -1,0 +1,19 @@
+{
+    "@@locale": "ar",
+    "allTasks": "جميع المهام",
+    "@allTasks": {
+        "description": "Title for all tasks screen"
+    },
+    "scheduleTasks": "جدول مهامك",
+    "@scheduleTasks": {
+        "description": "Schedule tasks title"
+    },
+    "manageTasksDesc": "أدر جدول مهامك بسهولة وكفاءة",
+    "@manageTasksDesc": {
+        "description": "Task management description"
+    },
+    "createTask": "إنشاء مهمة",
+    "@createTask": {
+        "description": "Create task button"
+    }
+} 

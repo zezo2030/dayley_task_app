@@ -1,8 +1,8 @@
 import 'package:dayley_task_app/routes/pages.dart';
 import 'package:dayley_task_app/utils/color_palette.dart';
-import 'package:dayley_task_app/views/home_screen.dart';
 import 'package:dayley_task_app/widgets/widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -30,9 +30,9 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: kPrimaryColor,
-        body: Center(
-            child: Column(
+      backgroundColor: kPrimaryColor,
+      body: Center(
+        child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
@@ -43,14 +43,28 @@ class _SplashScreenState extends State<SplashScreen> {
             const SizedBox(
               height: 20,
             ),
-            buildText('Everything Tasks', kWhiteColor, 30, FontWeight.w600,
-                TextAlign.center, TextOverflow.clip),
+            buildText(
+              'welcomeMessage'.tr(),
+              kWhiteColor,
+              30,
+              FontWeight.w600,
+              TextAlign.center,
+              TextOverflow.clip,
+            ),
             const SizedBox(
               height: 10,
             ),
-            buildText('Schedule your week with ease', kWhiteColor, 10,
-                FontWeight.normal, TextAlign.center, TextOverflow.clip),
+            buildText(
+              'appDescription'.tr(),
+              kWhiteColor,
+              10,
+              FontWeight.normal,
+              TextAlign.center,
+              TextOverflow.clip,
+            ),
           ],
-        )));
+        ),
+      ),
+    );
   }
 }
