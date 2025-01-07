@@ -3,6 +3,7 @@ import 'package:dayley_task_app/views/create_task_screen.dart';
 import 'package:dayley_task_app/views/home_screen.dart';
 import 'package:dayley_task_app/views/page_no_fount.dart';
 import 'package:dayley_task_app/views/splash_screen.dart';
+import 'package:dayley_task_app/views/task_details_screen.dart';
 import 'package:dayley_task_app/views/update_task.dart';
 import 'package:flutter/material.dart';
 
@@ -18,6 +19,8 @@ Route onGenerateRoute(RouteSettings routeSettings) {
       return MaterialPageRoute(builder: (_) => const CreateTaskScreen());
     case Pages.updateTask:
       return MaterialPageRoute(builder: (_) => const UpdateTask());
+    case Pages.taskDetails:
+      return MaterialPageRoute(builder: (_) => const TaskDetailsScreen());
     default:
       return MaterialPageRoute(builder: (_) => const PageNotFound());
   }
