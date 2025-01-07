@@ -17,7 +17,7 @@
   "selectDateRange": "اختر نطاق التاريخ",
   "taskStartingAt": "المهمة تبدأ في",
   "cannotEditCompleted": "لا يمكن تعديل مهمة مكتملة",
-  "cannotDeleteCompleted": "لا يمكن حذف مهمة مكتملة",
+  "cannotDeleteNotCompleted": "لا يمكن حذف مهمة غير مكتملة",
   "pleaseAllFields": "الرجاء ملء جميع الحقول",
   "welcomeMessage": "مرحباً بك في تطبيق \nإدارة المهام",
   "appDescription": "نظم مهامك اليومية بكل سهولة",

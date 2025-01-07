@@ -17,7 +17,7 @@
   "selectDateRange": "Select a date range",
   "taskStartingAt": "Task starting at",
   "cannotEditCompleted": "Cannot edit completed task",
-  "cannotDeleteCompleted": "Cannot delete completed task",
+  "cannotDeleteNotCompleted": "Cannot delete not completed task",
   "pleaseAllFields": "Please fill all fields",
   "welcomeMessage": "Welcome to Task Manager",
   "appDescription": "Organize your daily tasks easily",

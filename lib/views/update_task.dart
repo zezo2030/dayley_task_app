@@ -26,6 +26,7 @@ class _UpdateTaskState extends State<UpdateTask> {
   DateTime? _selectedDay;
   DateTime? _rangeStart;
   DateTime? _rangeEnd;
+  bool isReset = false;
 
   //late final TaskViewModel taskViewModel;
 
@@ -53,6 +54,8 @@ class _UpdateTaskState extends State<UpdateTask> {
     if (task != null) {
       _titleController.text = task.title;
       _descriptionController.text = task.description;
+    }
+    if (task != null && isReset == false) {
       _rangeStart = task.startDate;
       _rangeEnd = task.endDate;
     }
@@ -109,7 +112,15 @@ class _UpdateTaskState extends State<UpdateTask> {
                   onRangeSelected: _onRangeSelected,
                 ),
                 const SizedBox(height: 20),
-                buildSelectedDate(_rangeStart, _rangeEnd, context),
+                GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        isReset = true;
+                        _rangeStart = null;
+                        _rangeEnd = null;
+                      });
+                    },
+                    child: buildSelectedDate(_rangeStart, _rangeEnd, context)),
                 const SizedBox(height: 20),
                 buildText(
                   'title'.tr(),
@@ -182,8 +193,7 @@ class _UpdateTaskState extends State<UpdateTask> {
                       child: ElevatedButton(
                         onPressed: () {
                           // Add the task to the database
-                          final String taskId =
-                              DateTime.now().millisecondsSinceEpoch.toString();
+
                           final String title = _titleController.text;
                           final String description =
                               _descriptionController.text;
@@ -192,7 +202,6 @@ class _UpdateTaskState extends State<UpdateTask> {
                               _rangeStart != null &&
                               _rangeEnd != null) {
                             taskViewModel.updateTask(
-
                               Task(
                                 id: task!.id,
                                 title: title,
