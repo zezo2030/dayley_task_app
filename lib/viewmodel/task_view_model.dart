@@ -37,17 +37,25 @@ class TaskViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> updateTask(
-    String id,
-    Task updatedTask,
-  ) async {
-    //await _taskBox.deleteAt(index);
-    final task = _taskBox.get(id);
-    if (task != null) {
-      await _taskBox.put(id, updatedTask);
-      if (_selectedTask?.id == id) {
-        _selectedTask = updatedTask;
-      }
+  // not working
+
+// Future<void> updateTask(
+//   Task updatedTask,
+// ) async {
+//   if (_selectedTask != null) {
+//     await _taskBox.put(_selectedTask!.id, updatedTask);
+//     _selectedTask = updatedTask;
+//     notifyListeners();
+//   }
+// }
+
+  Future<void> updateTask(Task updatedTask) async {
+    final taskIndex = _taskBox.values
+        .toList()
+        .indexWhere((task) => task.id == updatedTask.id);
+    if (taskIndex != -1) {
+      await _taskBox.putAt(taskIndex, updatedTask);
+      _selectedTask = updatedTask;
       notifyListeners();
     }
   }

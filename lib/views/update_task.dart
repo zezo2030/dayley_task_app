@@ -192,9 +192,9 @@ class _UpdateTaskState extends State<UpdateTask> {
                               _rangeStart != null &&
                               _rangeEnd != null) {
                             taskViewModel.updateTask(
-                              task!.id,
+
                               Task(
-                                id: taskId,
+                                id: task!.id,
                                 title: title,
                                 description: description,
                                 startDate: _rangeStart!,

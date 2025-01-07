@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:slide_countdown/slide_countdown.dart';
 import 'package:table_calendar/table_calendar.dart';
-import 'package:flutter_countdown_timer/flutter_countdown_timer.dart';
 import 'package:dayley_task_app/utils/color_palette.dart';
 import 'package:dayley_task_app/viewmodel/task_view_model.dart';
 
@@ -19,7 +18,7 @@ class TaskDetailsScreen extends StatelessWidget {
 
 
     return Scaffold(
-      backgroundColor: kBlackColor,
+      backgroundColor: kGrey3,
       appBar: AppBar(
         backgroundColor: kWhiteColor,
         centerTitle: true,
@@ -60,7 +59,11 @@ class TaskDetailsScreen extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    Text("End Date:"),
+                    Text("End Date :",style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+
+                    ),),
                     SlideCountdownSeparated(
                       duration: Duration(milliseconds:  duradata),
                       style: const TextStyle(
@@ -82,13 +85,33 @@ class TaskDetailsScreen extends StatelessWidget {
               ],
             ),
           ),
+          const SizedBox(height: 60),
           ListView.builder(
             physics: NeverScrollableScrollPhysics(), // إلغاء التمرير الداخلي
             shrinkWrap: true, // اجعل القائمة تأخذ المساحة المطلوبة فقط
             itemCount: 5,
             itemBuilder: (context, index) {
-              return ListTile(
-                title: Text("عنصر من القائمة الفرعية $index"),
+              return Container(
+                margin: const EdgeInsets.all(10),
+                padding: const EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  color: kWhiteColor,
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Row(
+                  children: [
+                    Text("12:00 AM"),
+                    const SizedBox(width: 10),
+                    Container(
+                      height: 50,
+                      width: 100,
+                      decoration: BoxDecoration(
+                        color: kPrimaryColor,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    )
+                  ],
+                )
               );
             },
           ),
