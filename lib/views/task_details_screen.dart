@@ -1,4 +1,8 @@
 import 'package:dayley_task_app/routes/pages.dart';
+import 'package:dayley_task_app/widgets/animated_todo_item_completed.dart';
+import 'package:dayley_task_app/widgets/container_gradient_extension.dart';
+import 'package:dayley_task_app/widgets/gradient_mask_widget.dart';
+import 'package:dayley_task_app/widgets/padding_extension.dart';
 import 'package:dayley_task_app/widgets/widgets.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -9,8 +13,15 @@ import 'package:table_calendar/table_calendar.dart';
 import 'package:dayley_task_app/utils/color_palette.dart';
 import 'package:dayley_task_app/viewmodel/task_view_model.dart';
 
-class TaskDetailsScreen extends StatelessWidget {
+class TaskDetailsScreen extends StatefulWidget {
   const TaskDetailsScreen({super.key});
+
+  @override
+  State<TaskDetailsScreen> createState() => _TaskDetailsScreenState();
+}
+
+class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
+  bool isCompleted = false;
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +36,12 @@ class TaskDetailsScreen extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: kWhiteColor,
         centerTitle: true,
-        title: Text(task.title.toUpperCase()),
+        title: Text(
+          "ًWork Space",
+          style: TextStyle(
+            fontWeight: FontWeight.w500,
+          ),
+        ).redToBlueGradientMask(),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: kGrey1),
           onPressed: () {
@@ -143,8 +159,9 @@ class TaskDetailsScreen extends StatelessWidget {
                           color: kBlackColor,
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
+                          letterSpacing: 1.2,
                         ),
-                      ),
+                      ).redToBlueGradientMask(),
                     Container(
                       child: duradata <= 0
                           ? GestureDetector(
@@ -174,6 +191,10 @@ class TaskDetailsScreen extends StatelessWidget {
                                 color: kWhiteColor,
                               ),
                               separator: " : ",
+                              separatorStyle: const TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                              ),
                               onDone: () {
                                 print('Countdown Ended');
                               },
@@ -188,33 +209,31 @@ class TaskDetailsScreen extends StatelessWidget {
               ],
             ),
           ),
-          const SizedBox(height: 60),
+          const SizedBox(height: 10),
+          Center(
+            child: Text(
+              task.title,
+              style: TextStyle(
+                color: kBlackColor,
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+              ),
+            ).redToBlueGradientMask(),
+          ),
           ListView.builder(
             physics: NeverScrollableScrollPhysics(), // إلغاء التمرير الداخلي
             shrinkWrap: true, // اجعل القائمة تأخذ المساحة المطلوبة فقط
-            itemCount: 5,
+            itemCount: taskViewModel.tasks.length,
             itemBuilder: (context, index) {
-              return Container(
-                  margin: const EdgeInsets.all(10),
-                  padding: const EdgeInsets.all(10),
-                  decoration: BoxDecoration(
-                    color: kWhiteColor,
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: Row(
-                    children: [
-                      Text("12:00 AM"),
-                      const SizedBox(width: 10),
-                      Container(
-                        height: 50,
-                        width: 100,
-                        decoration: BoxDecoration(
-                          color: kPrimaryColor,
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                      )
-                    ],
-                  ));
+              return AnimatedTaskItem(
+                title: taskViewModel.tasks[index].title,
+                subtitle: 'اضغط للاكمال',
+                isCompleted: taskViewModel.tasks[index].isCompleted,
+                onTap: () {
+                  // تنفيذ شيء عند الضغط
+                  taskViewModel.toggleTaskComplection(index);
+                },
+              ).paddingAll(10);
             },
           ),
           ListTile(
