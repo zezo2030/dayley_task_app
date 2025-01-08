@@ -7,6 +7,7 @@ import 'package:dayley_task_app/widgets/widgets.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:provider/provider.dart';
 import 'package:slide_countdown/slide_countdown.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -210,6 +211,32 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
             ),
           ),
           const SizedBox(height: 10),
+          LinearPercentIndicator(
+            lineHeight: 30.0,
+            percent: 0.82,
+            center: Text(
+              "50%", //"${(task.completionPercentage * 100).toStringAsFixed(1)}%"
+              style: TextStyle(fontSize: 16.0,
+                color: kWhiteColor,
+                fontWeight: FontWeight.w600,
+                shadows: [
+                  Shadow(
+                    color: kPrimaryColor,
+                    blurRadius: 10,
+                  ),
+                ],
+                fontStyle: FontStyle.italic,
+              ),
+
+            ),
+            linearGradient: LinearGradient(
+              colors: [Colors.red,Colors.blue],
+            ),
+            backgroundColor: kGrey3,
+            barRadius: Radius.circular(10),
+          ),
+          const SizedBox(height: 10),
+          // task title
           Center(
             child: Text(
               task.title,
@@ -220,6 +247,20 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
               ),
             ).redToBlueGradientMask(),
           ),
+          const SizedBox(height: 5),
+          // task description
+          Center(child: Text(task.description)),
+          const SizedBox(height: 20,),
+          Row(
+            children: [
+              Text("all todo : 0").redToBlueGradientMask(),
+              const SizedBox(width: 10),
+
+              Text("complete todo : 0").redToBlueGradientMask(),
+              const SizedBox(width: 10),
+              Text("Incomplete todo : 0").redToBlueGradientMask(),
+            ],
+          ).paddingSymmetric(horizontal: 16),
           ListView.builder(
             physics: NeverScrollableScrollPhysics(), // إلغاء التمرير الداخلي
             shrinkWrap: true, // اجعل القائمة تأخذ المساحة المطلوبة فقط

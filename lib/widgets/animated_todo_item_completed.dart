@@ -105,7 +105,7 @@ class _AnimatedTaskItemState extends State<AnimatedTaskItem>
                   gradient: LinearGradient(
                     colors: widget.isCompleted
                         ? [Colors.green[400]!, Colors.green[600]!]
-                        : [Colors.red[700]!, Colors.blueAccent[700]!],
+                        : [Colors.blueAccent[700]!,Colors.red[700]!],
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
                   ),
@@ -173,24 +173,36 @@ class _AnimatedTaskItemState extends State<AnimatedTaskItem>
   Widget _buildIncompleteContent() {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 20),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.start,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(
-            widget.title,
-            style: TextStyle(
-              fontSize: 22,
-              fontWeight: FontWeight.bold,
-              color: kWhiteColor,
-            ),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                widget.title,
+                style: TextStyle(
+                  fontSize: 22,
+                  fontWeight: FontWeight.bold,
+                  color: kWhiteColor,
+                ),
+              ),
+              SizedBox(height: 2),
+              Text(
+                widget.subtitle,
+                style: TextStyle(
+                  fontSize: 16,
+                  color: Colors.grey,
+                ),
+              ),
+            ],
           ),
-          SizedBox(height: 2),
           Text(
-            widget.subtitle,
+            '12:10 PM',
             style: TextStyle(
               fontSize: 16,
-              color: Colors.grey,
+              color: kWhiteColor,
             ),
           ),
         ],
