@@ -216,7 +216,8 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
             percent: 0.82,
             center: Text(
               "50%", //"${(task.completionPercentage * 100).toStringAsFixed(1)}%"
-              style: TextStyle(fontSize: 16.0,
+              style: TextStyle(
+                fontSize: 16.0,
                 color: kWhiteColor,
                 fontWeight: FontWeight.w600,
                 shadows: [
@@ -227,10 +228,9 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
                 ],
                 fontStyle: FontStyle.italic,
               ),
-
             ),
             linearGradient: LinearGradient(
-              colors: [Colors.red,Colors.blue],
+              colors: [Colors.red, Colors.blue],
             ),
             backgroundColor: kGrey3,
             barRadius: Radius.circular(10),
@@ -250,15 +250,17 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
           const SizedBox(height: 5),
           // task description
           Center(child: Text(task.description)),
-          const SizedBox(height: 20,),
+          const SizedBox(
+            height: 20,
+          ),
           Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              Text("all todo : 0").redToBlueGradientMask(),
+              Text("all : 0").redToBlueGradientMask(),
               const SizedBox(width: 10),
-
-              Text("complete todo : 0").redToBlueGradientMask(),
+              Text("complete : 0").redToBlueGradientMask(),
               const SizedBox(width: 10),
-              Text("Incomplete todo : 0").redToBlueGradientMask(),
+              Text("Incomplete : 0").redToBlueGradientMask(),
             ],
           ).paddingSymmetric(horizontal: 16),
           ListView.builder(

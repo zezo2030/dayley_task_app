@@ -20,7 +20,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
   startTimer() async {
     Future.delayed(const Duration(milliseconds: 3000), () {
-      Navigator.pushNamed(context, Pages.home);
+      Navigator.pushNamed(context, Pages.home1);
 
       //   Navigator.push(
       //       context, MaterialPageRoute(builder: (context) => const HomeScreen()));
