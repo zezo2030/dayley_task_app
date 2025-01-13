@@ -11,13 +11,13 @@ class AnimatedTaskItem extends StatefulWidget {
   final String completedText;
 
   const AnimatedTaskItem({
-    Key? key,
+    super.key,
     required this.title,
     this.subtitle = 'اضغط للإنجاز',
     required this.onTap,
     required this.isCompleted,
     this.completedText = 'تم الإنجاز! 🎉',
-  }) : super(key: key);
+  });
 
   @override
   _AnimatedTaskItemState createState() => _AnimatedTaskItemState();
@@ -105,7 +105,7 @@ class _AnimatedTaskItemState extends State<AnimatedTaskItem>
                   gradient: LinearGradient(
                     colors: widget.isCompleted
                         ? [Colors.green[400]!, Colors.green[600]!]
-                        : [Colors.blueAccent[700]!,Colors.red[700]!],
+                        : [Colors.blueAccent[700]!, Colors.red[700]!],
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
                   ),

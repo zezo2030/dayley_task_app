@@ -1,4 +1,6 @@
+import 'package:dayley_task_app/models/habpits_model.dart';
 import 'package:dayley_task_app/models/task_model.dart';
+import 'package:dayley_task_app/models/time_of_day_adabter.dart';
 import 'package:dayley_task_app/routes/app_router.dart';
 import 'package:dayley_task_app/routes/pages.dart';
 import 'package:dayley_task_app/viewmodel/task_view_model.dart';
@@ -7,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:dayley_task_app/viewmodel/habits_viewmodel.dart';
 
 void main() async {
   // hive  تهيئه
@@ -17,9 +20,14 @@ void main() async {
   await Hive.initFlutter();
 
   Hive.registerAdapter(TaskAdapter());
+  Hive.registerAdapter(HabitsAdapter());
+  Hive.registerAdapter(TimeOfDayAdapter());
   // hive  فتح الصندوق
   const String tasksBox = 'tasks';
+  const String habitsBox = 'habits';
+
   await Hive.openBox<Task>(tasksBox);
+  await Hive.openBox<Habits>(habitsBox);
 
   runApp(
     EasyLocalization(
@@ -36,6 +44,8 @@ void main() async {
       child: MultiProvider(
         providers: [
           ChangeNotifierProvider(create: (_) => TaskViewModel()),
+          ChangeNotifierProvider(
+              create: (_) => HabitesViewModel()..checkAndUpdateHabits()),
         ],
         child: const MyApp(),
       ),

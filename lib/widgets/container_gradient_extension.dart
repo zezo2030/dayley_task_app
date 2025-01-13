@@ -15,7 +15,7 @@ extension ContainerGradientExtension on Container {
             end: end,
           ),
           borderRadius: BorderRadius.circular(radius)),
-      child: this.child,
+      child: child,
     );
   }
 
@@ -32,7 +32,7 @@ extension ContainerGradientExtension on Container {
           center: center,
         ),
       ),
-      child: this.child,
+      child: child,
     );
   }
 
@@ -51,7 +51,7 @@ extension ContainerGradientExtension on Container {
           endAngle: endAngle,
         ),
       ),
-      child: this.child,
+      child: child,
     );
   }
 }

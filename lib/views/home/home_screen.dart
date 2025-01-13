@@ -2,7 +2,6 @@ import 'package:dayley_task_app/routes/pages.dart';
 import 'package:dayley_task_app/utils/color_palette.dart';
 import 'package:dayley_task_app/viewmodel/task_view_model.dart';
 import 'package:dayley_task_app/widgets/moder_task_view.dart';
-import 'package:dayley_task_app/widgets/task_view_new_style_widget.dart';
 import 'package:dayley_task_app/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';

@@ -1,13 +1,17 @@
 import 'package:dayley_task_app/routes/pages.dart';
+import 'package:dayley_task_app/utils/color_palette.dart';
+import 'package:dayley_task_app/viewmodel/habits_viewmodel.dart';
 import 'package:dayley_task_app/widgets/padding_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/percent_indicator.dart';
+import 'package:provider/provider.dart';
 
 class HomeScreenV1 extends StatelessWidget {
   const HomeScreenV1({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final habitviewmodel = context.watch<HabitesViewModel>();
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
@@ -171,77 +175,167 @@ class HomeScreenV1 extends StatelessWidget {
           //     ],
           //   ),
           // )
+
+          ListView.builder(
+            shrinkWrap: true,
+            physics: NeverScrollableScrollPhysics(),
+            scrollDirection: Axis.vertical,
+            itemCount: habitviewmodel.habits.length,
+            itemBuilder: (context, index) {
+              return habitviewmodel.habits[index].isCompleted
+                  ? _habitCardCompleted(index, context)
+                      .paddingSymmetric(horizontal: 25, vertical: 10)
+                  : _habitCardNonCompleted(index, context)
+                      .paddingSymmetric(horizontal: 25, vertical: 10);
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _habitCardCompleted(int index, BuildContext context) {
+    final habitviewmodel = context.watch<HabitesViewModel>();
+    return Container(
+      height: 90,
+      width: double.infinity,
+      decoration: BoxDecoration(
+        //color: Color(0xFF3055CF).withAlpha(190),
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(
+          color: Colors.green[200]!,
+          width: 1,
+        ),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
           Container(
-            height: 90,
-            width: double.infinity,
-            decoration: BoxDecoration(
-              //color: Color(0xFF3055CF).withAlpha(190),
-              borderRadius: BorderRadius.circular(20),
-              border: Border.all(
-                color: Colors.green[200]!,
-                width: 1,
-              ),
-            ),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Container(
-                  child: Row(
+                  height: 50,
+                  width: 50,
+                  decoration: BoxDecoration(
+                    color: Colors.green[300],
+                    borderRadius: BorderRadius.circular(40),
+                  ),
+                  child: Center(
+                    child: Icon(
+                      Icons.check,
+                      color: Colors.white,
+                      size: 30,
+                    ),
+                  ),
+                ),
+                SizedBox(width: 10),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      habitviewmodel.habits[index].title,
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.green[300],
+                      ),
+                    ),
+                    Text(
+                      "Completed!",
+                      style: TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.green[300],
+                      ),
+                    ),
+                  ],
+                )
+              ],
+            ),
+          ),
+          Text(
+            habitviewmodel.habits[index].selectedTime.format(context),
+            style: TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.bold,
+              color: Colors.green[300],
+            ),
+          ),
+        ],
+      ).paddingSymmetric(horizontal: 16),
+    );
+  }
+
+  Widget _habitCardNonCompleted(int index, BuildContext context) {
+    final habitviewmodel = context.watch<HabitesViewModel>();
+    return GestureDetector(
+      onTap: () {
+        habitviewmodel.toggleHabitComplection(index);
+      },
+      child: Container(
+        height: 90,
+        width: double.infinity,
+        decoration: BoxDecoration(
+          //color: Color(0xFF3055CF).withAlpha(190),
+          borderRadius: BorderRadius.circular(20),
+          border: Border.all(
+            color: kPrimaryColor,
+            width: 1,
+          ),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Container(
+              child: Row(
+                children: [
+                  Container(
+                    height: 50,
+                    width: 50,
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        image: AssetImage('assets/images/cyicleng.png'),
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ),
+                  SizedBox(width: 20),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Container(
-                        height: 50,
-                        width: 50,
-                        decoration: BoxDecoration(
-                          color: Colors.green[300],
-                          borderRadius: BorderRadius.circular(40),
-                        ),
-                        child: Center(
-                          child: Icon(
-                            Icons.check,
-                            color: Colors.white,
-                            size: 30,
-                          ),
+                      Text(
+                        habitviewmodel.habits[index].title,
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          color: kPrimaryColor,
                         ),
                       ),
-                      SizedBox(width: 10),
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "Shopping",
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.green[300],
-                            ),
-                          ),
-                          Text(
-                            "Completed!",
-                            style: TextStyle(
-                              fontSize: 12,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.green[300],
-                            ),
-                          ),
-                        ],
-                      )
+                      Text(
+                        "pres to Complete!",
+                        style: TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.grey,
+                        ),
+                      ),
                     ],
-                  ),
-                ),
-                Text(
-                  "03:34PM",
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.green[300],
-                  ),
-                ),
-              ],
-            ).paddingSymmetric(horizontal: 16),
-          ).paddingSymmetric(horizontal: 25),
-          SizedBox(height: 10),
-        ],
+                  )
+                ],
+              ),
+            ),
+            Text(
+              habitviewmodel.habits[index].selectedTime.format(context),
+              style: TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.bold,
+                color: kPrimaryColor,
+              ),
+            ),
+          ],
+        ).paddingSymmetric(horizontal: 16),
       ),
     );
   }

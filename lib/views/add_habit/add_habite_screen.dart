@@ -1,7 +1,11 @@
+import 'package:dayley_task_app/models/habpits_model.dart';
+import 'package:dayley_task_app/routes/pages.dart';
 import 'package:dayley_task_app/utils/color_palette.dart';
+import 'package:dayley_task_app/viewmodel/habits_viewmodel.dart';
 import 'package:dayley_task_app/widgets/padding_extension.dart';
 import 'package:dayley_task_app/widgets/widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class AddHabiteScreen extends StatefulWidget {
   const AddHabiteScreen({super.key});
@@ -11,12 +15,14 @@ class AddHabiteScreen extends StatefulWidget {
 }
 
 class _AddHabiteScreenState extends State<AddHabiteScreen> {
-  final controller = TextEditingController();
+  final TextEditingController controller = TextEditingController();
   bool isRepeatable = false;
-   TimeOfDay? timeOfHabits;
+  TimeOfDay? timeOfHabits;
 
   @override
   Widget build(BuildContext context) {
+    final habitsViewModel = context.watch<HabitesViewModel>();
+
     return Scaffold(
       appBar: AppBar(),
       body: ListView(
@@ -31,7 +37,7 @@ class _AddHabiteScreenState extends State<AddHabiteScreen> {
           ).paddingAll(16),
           SizedBox(height: 40),
           SizedBox(
-            height: 60,
+            height: 50,
             child: buildTextFormField(
               controller,
               "your habites",
@@ -170,7 +176,7 @@ class _AddHabiteScreenState extends State<AddHabiteScreen> {
               children: [
                 Expanded(
                   child: GestureDetector(
-                    onTap: ()=> Navigator.pop(context),
+                    onTap: () => Navigator.pop(context),
                     child: Container(
                       decoration: BoxDecoration(
                         color: Colors.grey[200],
@@ -192,6 +198,22 @@ class _AddHabiteScreenState extends State<AddHabiteScreen> {
                 SizedBox(width: 30),
                 Expanded(
                   child: GestureDetector(
+                    onTap: () {
+                      // Save the data here
+                      if (controller.text.isNotEmpty && timeOfHabits != null) {
+                        // Save the data here
+                        habitsViewModel.addHabit(
+                          Habits(
+                            id: DateTime.now().toString(),
+                            title: controller.text,
+                            isRepetable: isRepeatable,
+                            selectedTime: timeOfHabits!,
+                          ),
+                        );
+                        print(habitsViewModel.habits.length);
+                        Navigator.pushNamed(context, Pages.home1);
+                      }
+                    },
                     child: Container(
                       decoration: BoxDecoration(
                         color: kPrimaryColor,

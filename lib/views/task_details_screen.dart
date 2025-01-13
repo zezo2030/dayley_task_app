@@ -1,6 +1,5 @@
 import 'package:dayley_task_app/routes/pages.dart';
 import 'package:dayley_task_app/widgets/animated_todo_item_completed.dart';
-import 'package:dayley_task_app/widgets/container_gradient_extension.dart';
 import 'package:dayley_task_app/widgets/gradient_mask_widget.dart';
 import 'package:dayley_task_app/widgets/padding_extension.dart';
 import 'package:dayley_task_app/widgets/widgets.dart';
