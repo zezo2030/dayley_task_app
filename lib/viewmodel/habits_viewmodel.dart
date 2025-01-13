@@ -15,6 +15,19 @@ class HabitesViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
+
+  // get nmper of completed habits and nou completed habits
+  int get numberOfCompletedHabits =>
+      _habitsBox.values.where((habit) => habit.isCompleted).length;
+
+   persentageOfCompletedHabits() {
+    if (_habitsBox.values.isEmpty) {
+      return 0;
+    }
+    return (numberOfCompletedHabits / _habitsBox.values.length);
+  }
+
+
   // check and update habits at end of day
   Future<void> checkAndUpdateHabits() async {
     final today = DateTime.now();

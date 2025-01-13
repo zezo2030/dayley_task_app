@@ -12,6 +12,13 @@ class HomeScreenV1 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final habitviewmodel = context.watch<HabitesViewModel>();
+
+
+
+
+
+
+
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
@@ -73,9 +80,9 @@ class HomeScreenV1 extends StatelessWidget {
                   child: CircularPercentIndicator(
                     radius: 45.0,
                     lineWidth: 10.0,
-                    percent: 0.75,
+                    percent: habitviewmodel.persentageOfCompletedHabits().toDouble(),
                     center: Text(
-                      "75%",
+                      "${(habitviewmodel.persentageOfCompletedHabits() * 100).toInt()}%",
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 20.0,
@@ -118,7 +125,7 @@ class HomeScreenV1 extends StatelessWidget {
                     ),
                     SizedBox(height: 15),
                     Text(
-                      "10 of 15 completed",
+                      "${habitviewmodel.numberOfCompletedHabits} of ${habitviewmodel.habits.length} completed",
                       style: TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.normal,
@@ -147,7 +154,9 @@ class HomeScreenV1 extends StatelessWidget {
                   Icons.align_horizontal_left,
                   color: Color(0xFF363957),
                 ),
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.pushNamed(context, Pages.home);
+                },
               ),
             ],
           ),
