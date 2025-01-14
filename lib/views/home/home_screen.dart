@@ -26,17 +26,8 @@ class HomeScreen extends StatelessWidget {
       child: ScaffoldMessenger(
         child: Scaffold(
           appBar: AppBar(
-            backgroundColor: kGrey4,
+            backgroundColor: kWhiteColor,
             automaticallyImplyLeading: false,
-            title: buildText(
-              'allTasks'.tr(),
-              kBlackColor,
-              20,
-              FontWeight.w600,
-              TextAlign.center,
-              TextOverflow.clip,
-            ),
-            centerTitle: true,
             actions: [
               IconButton(
                 icon: Container(
