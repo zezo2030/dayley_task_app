@@ -22,6 +22,7 @@ void main() async {
   Hive.registerAdapter(TaskAdapter());
   Hive.registerAdapter(HabitsAdapter());
   Hive.registerAdapter(TimeOfDayAdapter());
+
   // hive  فتح الصندوق
   const String tasksBox = 'tasks';
   const String habitsBox = 'habits';

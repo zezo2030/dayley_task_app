@@ -45,7 +45,7 @@ class _AddHabiteScreenState extends State<AddHabiteScreen> {
             ),
           ).paddingSymmetric(horizontal: 16),
           SizedBox(height: 40),
-          Container(
+          SizedBox(
             height: 60,
             width: double.infinity,
             child: Row(
@@ -112,7 +112,7 @@ class _AddHabiteScreenState extends State<AddHabiteScreen> {
             ),
           ).paddingSymmetric(horizontal: 16),
           SizedBox(height: 40),
-          Container(
+          SizedBox(
             height: 50,
             width: double.infinity,
             child: Row(
@@ -153,7 +153,7 @@ class _AddHabiteScreenState extends State<AddHabiteScreen> {
                   ),
                 ),
                 SizedBox(width: 10),
-                Container(
+                SizedBox(
                   width: 120,
                   child: Text(
                     timeOfHabits != null
@@ -170,7 +170,7 @@ class _AddHabiteScreenState extends State<AddHabiteScreen> {
             ),
           ).paddingSymmetric(horizontal: 16),
           SizedBox(height: 40),
-          Container(
+          SizedBox(
             height: 60,
             child: Row(
               children: [
