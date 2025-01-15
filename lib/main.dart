@@ -2,9 +2,11 @@ import 'package:dayley_task_app/adapters/color_adapter.dart';
 import 'package:dayley_task_app/models/habpits_model.dart';
 import 'package:dayley_task_app/models/task_model.dart';
 import 'package:dayley_task_app/models/time_of_day_adabter.dart';
+import 'package:dayley_task_app/models/todo_in_task_model.dart';
 import 'package:dayley_task_app/routes/app_router.dart';
 import 'package:dayley_task_app/routes/pages.dart';
 import 'package:dayley_task_app/viewmodel/task_view_model.dart';
+import 'package:dayley_task_app/viewmodel/todo_in_task_viewmodel.dart';
 import 'package:dayley_task_app/views/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -24,13 +26,16 @@ void main() async {
   Hive.registerAdapter(HabitsAdapter());
   Hive.registerAdapter(TimeOfDayAdapter());
   Hive.registerAdapter(ColorAdapter());
+  Hive.registerAdapter(TodoInTaskModelAdapter());
 
   // hive  فتح الصندوق
   const String tasksBox = 'tasks';
   const String habitsBox = 'habits';
+  const String todosBox = 'todos';
 
   await Hive.openBox<Task>(tasksBox);
   await Hive.openBox<Habits>(habitsBox);
+  await Hive.openBox<TodoInTaskModel>(todosBox);
 
   runApp(
     EasyLocalization(
@@ -47,6 +52,7 @@ void main() async {
       child: MultiProvider(
         providers: [
           ChangeNotifierProvider(create: (_) => TaskViewModel()),
+          ChangeNotifierProvider(create: (_) => TodoInTaskViewModel()),
           ChangeNotifierProvider(
               create: (_) => HabitesViewModel()..checkAndUpdateHabits()),
         ],

@@ -28,7 +28,6 @@ class _AnimatedTaskItemState extends State<AnimatedTaskItem>
   late AnimationController _controller;
   late Animation<double> _scaleAnimation;
   late Animation<double> _rotateAnimation;
-  late Animation<double> _opacityAnimation;
 
   @override
   void initState() {
@@ -59,16 +58,6 @@ class _AnimatedTaskItemState extends State<AnimatedTaskItem>
       CurvedAnimation(
         parent: _controller,
         curve: Curves.easeInOutBack,
-      ),
-    );
-
-    _opacityAnimation = Tween<double>(
-      begin: 0.0,
-      end: 1.0,
-    ).animate(
-      CurvedAnimation(
-        parent: _controller,
-        curve: Interval(0.5, 1.0, curve: Curves.easeIn),
       ),
     );
   }
