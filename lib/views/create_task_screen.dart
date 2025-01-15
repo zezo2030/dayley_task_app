@@ -40,6 +40,17 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
     });
   }
 
+  final List<MaterialAccentColor> _colors = [
+    Colors.redAccent,
+    Colors.blueAccent,
+    Colors.greenAccent,
+    Colors.tealAccent,
+    Colors.purpleAccent,
+    Colors.orangeAccent,
+  ];
+
+  int colorIndex = 0;
+
   @override
   Widget build(BuildContext context) {
     final taskViewModel = Provider.of<TaskViewModel>(context);
@@ -96,6 +107,39 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
                 ),
                 const SizedBox(height: 20),
                 buildSelectedDate(_rangeStart, _rangeEnd, context),
+                const SizedBox(height: 20),
+                Container(
+                  height: 50,
+                  width: double.infinity,
+                  child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: _colors.length,
+                    itemBuilder: (context, index) {
+                      return GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            colorIndex = index;
+                          });
+                        },
+                        child: Container(
+                          margin: const EdgeInsets.only(right: 10),
+                          height: 40,
+                          width: 50,
+                          decoration: BoxDecoration(
+                            color: _colors[index].shade200,
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: colorIndex == index
+                              ? const Icon(
+                                  Icons.check,
+                                  color: Colors.white,
+                                )
+                              : null,
+                        ),
+                      );
+                    },
+                  ),
+                ),
                 const SizedBox(height: 20),
                 buildText(
                   'title'.tr(),
@@ -186,6 +230,7 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
                                 description: description,
                                 startDate: _rangeStart!,
                                 endDate: _rangeEnd!,
+                                color: _colors[colorIndex],
                               ),
                             );
                             // _titleController.clear();

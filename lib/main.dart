@@ -1,3 +1,4 @@
+import 'package:dayley_task_app/adapters/color_adapter.dart';
 import 'package:dayley_task_app/models/habpits_model.dart';
 import 'package:dayley_task_app/models/task_model.dart';
 import 'package:dayley_task_app/models/time_of_day_adabter.dart';
@@ -22,6 +23,7 @@ void main() async {
   Hive.registerAdapter(TaskAdapter());
   Hive.registerAdapter(HabitsAdapter());
   Hive.registerAdapter(TimeOfDayAdapter());
+  Hive.registerAdapter(ColorAdapter());
 
   // hive  فتح الصندوق
   const String tasksBox = 'tasks';

@@ -13,12 +13,6 @@ class HomeScreenV1 extends StatelessWidget {
   Widget build(BuildContext context) {
     final habitviewmodel = context.watch<HabitesViewModel>();
 
-
-
-
-
-
-
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
@@ -80,7 +74,8 @@ class HomeScreenV1 extends StatelessWidget {
                   child: CircularPercentIndicator(
                     radius: 45.0,
                     lineWidth: 10.0,
-                    percent: habitviewmodel.persentageOfCompletedHabits().toDouble(),
+                    percent:
+                        habitviewmodel.persentageOfCompletedHabits().toDouble(),
                     center: Text(
                       "${(habitviewmodel.persentageOfCompletedHabits() * 100).toInt()}%",
                       style: TextStyle(
@@ -219,49 +214,47 @@ class HomeScreenV1 extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Container(
-            child: Row(
-              children: [
-                Container(
-                  height: 50,
-                  width: 50,
-                  decoration: BoxDecoration(
-                    color: Colors.green[300],
-                    borderRadius: BorderRadius.circular(40),
-                  ),
-                  child: Center(
-                    child: Icon(
-                      Icons.check,
-                      color: Colors.white,
-                      size: 30,
-                    ),
+          Row(
+            children: [
+              Container(
+                height: 50,
+                width: 50,
+                decoration: BoxDecoration(
+                  color: Colors.green[300],
+                  borderRadius: BorderRadius.circular(40),
+                ),
+                child: Center(
+                  child: Icon(
+                    Icons.check,
+                    color: Colors.white,
+                    size: 30,
                   ),
                 ),
-                SizedBox(width: 10),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      habitviewmodel.habits[index].title,
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.green[300],
-                      ),
+              ),
+              SizedBox(width: 10),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    habitviewmodel.habits[index].title,
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.green[300],
                     ),
-                    Text(
-                      "Completed!",
-                      style: TextStyle(
-                        fontSize: 12,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.green[300],
-                      ),
+                  ),
+                  Text(
+                    "Completed!",
+                    style: TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.green[300],
                     ),
-                  ],
-                )
-              ],
-            ),
+                  ),
+                ],
+              )
+            ],
           ),
           Text(
             habitviewmodel.habits[index].selectedTime.format(context),
@@ -296,44 +289,42 @@ class HomeScreenV1 extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Container(
-              child: Row(
-                children: [
-                  Container(
-                    height: 50,
-                    width: 50,
-                    decoration: BoxDecoration(
-                      image: DecorationImage(
-                        image: AssetImage('assets/images/cyicleng.png'),
-                        fit: BoxFit.cover,
-                      ),
+            Row(
+              children: [
+                Container(
+                  height: 50,
+                  width: 50,
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      image: AssetImage('assets/images/cyicleng.png'),
+                      fit: BoxFit.cover,
                     ),
                   ),
-                  SizedBox(width: 20),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        habitviewmodel.habits[index].title,
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                          color: kPrimaryColor,
-                        ),
+                ),
+                SizedBox(width: 20),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      habitviewmodel.habits[index].title,
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: kPrimaryColor,
                       ),
-                      Text(
-                        "pres to Complete!",
-                        style: TextStyle(
-                          fontSize: 12,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.grey,
-                        ),
+                    ),
+                    Text(
+                      "pres to Complete!",
+                      style: TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.grey,
                       ),
-                    ],
-                  )
-                ],
-              ),
+                    ),
+                  ],
+                )
+              ],
             ),
             Text(
               habitviewmodel.habits[index].selectedTime.format(context),

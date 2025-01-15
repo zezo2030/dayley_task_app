@@ -208,6 +208,7 @@ class _UpdateTaskState extends State<UpdateTask> {
                                 description: description,
                                 startDate: _rangeStart!,
                                 endDate: _rangeEnd!,
+                                color: task.color,
                               ),
                             );
                             // _titleController.clear();

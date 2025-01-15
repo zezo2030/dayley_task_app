@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 part 'task_model.g.dart';
 
@@ -21,6 +22,9 @@ class Task {
   @HiveField(5)
   final String id;
 
+  @HiveField(6)
+  final Color color;
+
   Task({
     required this.id,
     required this.title,
@@ -28,5 +32,6 @@ class Task {
     required this.startDate,
     required this.endDate,
     this.isCompleted = false,
+    required this.color,
   });
 }
