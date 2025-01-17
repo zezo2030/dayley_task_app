@@ -50,12 +50,41 @@ class TaskViewModel extends ChangeNotifier {
 // }
 
   Future<void> updateTask(Task updatedTask) async {
-    final taskIndex = _taskBox.values
-        .toList()
-        .indexWhere((task) => task.id == updatedTask.id);
+    final taskIndex = tasks.indexWhere((task) => task.id == updatedTask.id);
     if (taskIndex != -1) {
       await _taskBox.putAt(taskIndex, updatedTask);
       _selectedTask = updatedTask;
+      notifyListeners();
+    }
+  }
+
+  // void updateTaskProgress(String taskId, double progress) {
+  //   final taskIndex =
+  //       _taskBox.values.toList().indexWhere((task) => task.id == taskId);
+  //   if (taskIndex != -1) {
+  //     Task task = _taskBox.getAt(taskIndex)!;
+  //     task.progress = progress;
+  //     _taskBox.putAt(taskIndex, task);
+  //     notifyListeners();
+  //   }
+  // }
+
+  Future<void> updateTaskProgress(String taskId, double progress) async {
+    final taskIndex = tasks.indexWhere((task) => task.id == taskId);
+    if (taskIndex != -1) {
+      Task task = tasks[taskIndex];
+      task.progress = progress;
+      await _taskBox.putAt(taskIndex, task);
+      notifyListeners();
+    }
+  }
+
+  Future<void> updateTaskCompletion(String taskId, bool isCompleted) async {
+    final taskIndex = tasks.indexWhere((task) => task.id == taskId);
+    if (taskIndex != -1) {
+      Task task = tasks[taskIndex];
+      task.isCompleted = isCompleted;
+      await _taskBox.putAt(taskIndex, task);
       notifyListeners();
     }
   }

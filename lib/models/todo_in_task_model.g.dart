@@ -8,7 +8,7 @@ part of 'todo_in_task_model.dart';
 
 class TodoInTaskModelAdapter extends TypeAdapter<TodoInTaskModel> {
   @override
-  final int typeId = 4;
+  final int typeId = 2;
 
   @override
   TodoInTaskModel read(BinaryReader reader) {
@@ -20,22 +20,19 @@ class TodoInTaskModelAdapter extends TypeAdapter<TodoInTaskModel> {
       taskId: fields[0] as String,
       todoTitle: fields[1] as String,
       isCompleted: fields[2] as bool,
-      todoTime: fields[3] as TimeOfDay,
     );
   }
 
   @override
   void write(BinaryWriter writer, TodoInTaskModel obj) {
     writer
-      ..writeByte(4)
+      ..writeByte(3)
       ..writeByte(0)
       ..write(obj.taskId)
       ..writeByte(1)
       ..write(obj.todoTitle)
       ..writeByte(2)
-      ..write(obj.isCompleted)
-      ..writeByte(3)
-      ..write(obj.todoTime);
+      ..write(obj.isCompleted);
   }
 
   @override

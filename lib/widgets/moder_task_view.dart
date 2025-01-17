@@ -21,7 +21,6 @@ class _ModerTaskViewState extends State<ModerTaskView> {
   @override
   Widget build(BuildContext context) {
     final taskViewModel = context.watch<TaskViewModel>();
-
     return Scaffold(
       backgroundColor: kWhiteColor,
       body: ListView(
@@ -41,6 +40,7 @@ class _ModerTaskViewState extends State<ModerTaskView> {
             physics: const NeverScrollableScrollPhysics(),
             itemBuilder: (context, index) {
               final lko = taskViewModel.tasks[index].color.withOpacity(0.5);
+              print(taskViewModel.tasks[index].progress);
               return GestureDetector(
                 onTap: () {
                   taskViewModel.setSelectedTask(taskViewModel.tasks[index]);
@@ -69,7 +69,9 @@ class _ModerTaskViewState extends State<ModerTaskView> {
                             ),
                             child: Center(
                               child: Text(
-                                "Completed",
+                                taskViewModel.tasks[index].isCompleted
+                                    ? "Completed"
+                                    : "In Progress",
                                 style: TextStyle(
                                   color: kTextColor,
                                   fontWeight: FontWeight.bold,
@@ -93,21 +95,22 @@ class _ModerTaskViewState extends State<ModerTaskView> {
                                   children: [
                                     SizedBox(width: 10),
                                     SizedBox(
-                                      width: 130,
+                                      width: 120,
                                       child: LinearPercentIndicator(
                                         lineHeight: 5,
-                                        percent: 0.5,
+                                        percent:
+                                            taskViewModel.tasks[index].progress,
                                         progressColor: lko,
                                         backgroundColor: lko.withOpacity(0.2),
                                         barRadius: Radius.circular(10),
                                       ),
                                     ),
                                     Text(
-                                      "50%",
+                                      "${(taskViewModel.tasks[index].progress * 100).toStringAsFixed(1)}%",
                                       style: TextStyle(
                                         color: taskViewModel.tasks[index].color,
                                         fontWeight: FontWeight.bold,
-                                        fontSize: 16,
+                                        fontSize: 14,
                                       ),
                                     ).paddingAll(8),
                                   ],
@@ -128,7 +131,7 @@ class _ModerTaskViewState extends State<ModerTaskView> {
                           ),
                           child: Row(
                             children: [
-                              Container(
+                              SizedBox(
                                 width: 100,
                                 height: 100,
                                 child: Transform.rotate(
@@ -164,7 +167,7 @@ class _ModerTaskViewState extends State<ModerTaskView> {
                                       ),
                                     ),
                                     Text(
-                                      taskViewModel.tasks[index].title,
+                                      taskViewModel.tasks[index].description,
                                       style: TextStyle(
                                         color: kTextColor,
                                         fontWeight: FontWeight.normal,
@@ -178,13 +181,27 @@ class _ModerTaskViewState extends State<ModerTaskView> {
                                 width: 50,
                                 child: IconButton(
                                   onPressed: () {
-                                    taskViewModel.deleteTask(index);
+                                    if (taskViewModel
+                                        .tasks[index].isCompleted) {
+                                      taskViewModel.deleteTask(index);
+                                    } else {
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        SnackBar(
+                                          behavior: SnackBarBehavior.floating,
+                                          backgroundColor: kRed,
+                                          content: Text(
+                                              'Cannot delete an incomplete task'),
+                                          duration: Duration(seconds: 2),
+                                        ),
+                                      );
+                                    }
                                   },
                                   icon: SvgPicture.asset(
                                     'assets/svgs/delete.svg',
                                     height: 22,
                                     colorFilter: ColorFilter.mode(
-                                      kTextColor,
+                                      kWhiteColor,
                                       BlendMode.srcIn,
                                     ),
                                   ),

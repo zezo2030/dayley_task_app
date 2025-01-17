@@ -108,7 +108,7 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
                 const SizedBox(height: 20),
                 buildSelectedDate(_rangeStart, _rangeEnd, context),
                 const SizedBox(height: 20),
-                Container(
+                SizedBox(
                   height: 50,
                   width: double.infinity,
                   child: ListView.builder(

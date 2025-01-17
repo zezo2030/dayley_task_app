@@ -3,7 +3,7 @@ import 'package:hive/hive.dart';
 part 'task_model.g.dart';
 
 @HiveType(typeId: 0)
-class Task {
+class Task extends HiveObject {
   @HiveField(0)
   final String title;
 
@@ -25,6 +25,9 @@ class Task {
   @HiveField(6)
   final Color color;
 
+  @HiveField(7)
+  double progress;
+
   Task({
     required this.id,
     required this.title,
@@ -33,5 +36,6 @@ class Task {
     required this.endDate,
     this.isCompleted = false,
     required this.color,
+    this.progress = 0.0,
   });
 }

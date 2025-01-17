@@ -3,7 +3,7 @@ import 'package:hive/hive.dart';
 
 class ColorAdapter extends TypeAdapter<Color> {
   @override
-  final int typeId = 2; // Unique ID for this adapter
+  final int typeId = 45; // Unique ID for this adapter
 
   @override
   Color read(BinaryReader reader) {
