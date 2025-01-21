@@ -71,6 +71,8 @@ lib/
 
 ### إضافة مهمة جديدة:
 ![Add Task Screen](assets/create_task.png)
+![Add Task Screen](assets/tasks.png)
+![Add Task Screen](assets/task_details.png)
 
 ---
 
