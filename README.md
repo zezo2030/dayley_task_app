@@ -70,7 +70,7 @@ lib/
 ![Home Screen](assets/habits_screen.png)
 
 ### إضافة مهمة جديدة:
-![Add Task Screen](link_to_screenshot.png)
+![Add Task Screen](assets/create_task.png)
 
 ---
 
