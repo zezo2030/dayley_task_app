@@ -67,7 +67,7 @@ lib/
 
 ## لقطات شاشة
 ### الشاشة الرئيسية:
-![Home Screen](link_to_screenshot.png)
+![Home Screen](assets/habits_screen.png)
 
 ### إضافة مهمة جديدة:
 ![Add Task Screen](link_to_screenshot.png)
